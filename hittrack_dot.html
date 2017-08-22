@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<head>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+      <meta charset="utf-8">
+		<title>Hit track</title>
+		
+</head>
+<body>
+<h1>Heat map showing the locations of all hit ball</h1>
+<form>
+<select name="selectplayer" onchange = "changePlayer(this)">
+　<option value="545361">Mike Trout .LAA</option>
+  <option value="405395">Albert Pujols .LAA</option>
+　<option value="592178">Kris Bryant .CHC</option>
+　<option value="519203">Anthony Rizzo .CHC</option>
+  <option value="605141">Mookie Betts .BOS</option>
+  <option value="120074">David Ortiz .BOS</option>
+</select>
+</form>
+<br />
+<strong>Total number of specific hit ball :</strong>
+<br />
+<div id="single" > </div>
+<div id="double" > </div>
+<div id="triple" > </div>
+<div id="home_run" > </div>
+<br />
+<strong>Description :</strong>
+<br />
+此圖表為顯示該球員在MLB 105/4-105/10間，打擊為安打的球落地分布情況。
+<br />
+Single代表一壘安打，Double代表二壘安打，Triple代表三壘安打，Home Run代表全壘打。
+<br />
+資料來源：http://gd2.mlb.com/components/game/mlb/
+<br />
+<br />
+</body>
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<script>
+var array = [[107,34,5,29],[110,19,0,32],[107,40,3,42],[98,48,4,35],[139,45,5,31],[82,50,1,38]];
+
+var svg = d3.select("body").append("svg")
+    .attr("width", "354px")
+    .attr("height", "251px");
+	
+	svg.append("image")
+	.attr("x",0)
+	.attr("y",0)
+	.attr("xlink:href","filed.jpg");
+d3.csv("./player_data/"+545361+"_test_original.csv", function(data){
+	document.getElementById("single").innerHTML = "<font color='#24cbfb'>Single</font> : " + array[0][0];
+	document.getElementById("double").innerHTML = "<font color='yellow'>Double</font> : " + array[0][1];
+	document.getElementById("triple").innerHTML = "<font color='purple'>Triple</font> : " + array[0][2];
+	document.getElementById("home_run").innerHTML = "<font color='red'>Home Run</font> : "+ array[0][3];
+	dataset = data;
+	
+	svg.selectAll(".dot")
+      .data(dataset)
+    .enter().append("circle")
+      .attr("class", "dot")
+      .attr("r", 3.5)
+      .attr("cx", 177)
+      .attr("cy", 250)
+      .style("fill", function(d){
+					if(d.des=='Single')return '#24cbfb';
+					else if (d.des=='Double')return 'yellow';
+					else if (d.des=='Triple')return 'purple';
+					else if (d.des=='Home Run')return 'red';
+					})
+	   .style("opacity", .6)
+	   .transition()
+	.duration(1500)
+	.delay(function(d, i){return i * 10 })
+	.attr("cx", function(d){return d.x;})
+      .attr("cy", function(d){return (250-d.y);});
+	
+});
+function changePlayer(selectPlayer)
+{
+d3.selectAll("svg").selectAll("circle").remove();
+var filename = selectPlayer.value;
+var id = 0;
+if (filename == "545361")id = 0;
+if (filename == "405395")id = 1;
+if (filename == "592178")id = 2;
+if (filename == "519203")id = 3;
+if (filename == "605141")id = 4;
+if (filename == "120074")id = 5;
+
+document.getElementById("single").innerHTML = "<font color='#24cbfb'>Single</font> : " + array[id][0];
+document.getElementById("double").innerHTML = "<font color='yellow'>Double</font> : " + array[id][1];
+document.getElementById("triple").innerHTML = "<font color='purple'>Triple</font> : " + array[id][2];
+document.getElementById("home_run").innerHTML = "<font color='red'>Home Run</font> :"+ array[id][3];
+d3.csv("./player_data/"+filename+"_test_original.csv", function(data){
+	dataset = data;
+	svg.selectAll(".dot")
+      .data(dataset)
+    .enter().append("circle")
+      .attr("class", "dot")
+      .attr("r", 3.5)
+      .attr("cx", 177)
+      .attr("cy", 250)
+      .style("fill", function(d){
+					if(d.des=='Single')return '#24cbfb';
+					else if (d.des=='Double')return 'yellow';
+					else if (d.des=='Triple')return 'purple';
+					else if (d.des=='Home Run')return 'red';
+					})
+	   .style("opacity", .6)
+	   .transition()
+	.duration(1500)
+	.delay(function(d, i){return i * 10 })
+	.attr("cx", function(d){return d.x;})
+      .attr("cy", function(d){return (250-d.y);});
+});
+}
+
+</script>

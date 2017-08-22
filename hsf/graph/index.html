@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Helvetica, sans-serif;
+            text-align: center;
+        }
+        .path:hover {
+            opacity: 0.5;
+        }
+
+       .wrapper {
+           width: 700px;
+           margin-left: 30%;
+           margin-right: 30%;
+           text-align: center;
+       }
+    </style>
+</head>
+<body>
+     <div class="wrapper">   
+        <h1>MLB game day visualization</h1>
+        <div id="container"></div>
+        <p>
+            後來想到的呈現方式是類似sunburst圖 在每一塊arc會切成兩半來顯示一場比賽中兩支球隊的各項數據，例如安打數、得分數等等。
+            不過目前是先把分數顯示出來而已，然後還有一點小bug導致每個區塊只會顯示一支球隊
+            每支球隊的區塊用該球隊自己的官方配色來表示，並且將隊徽顯示在圓圈的最外圍(不太確定隊徽可不可以直接拿來放在上面，先沒放)
+        </p>
+     </div>
+    <script src="d3.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>
